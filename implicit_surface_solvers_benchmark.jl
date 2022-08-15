@@ -1,7 +1,8 @@
 using Oceananigans
 using Oceananigans.Units
+using Oceananigans.BuoyancyModels: g_Earth
 using Oceananigans.ImmersedBoundaries: ImmersedBoundaryGrid, GridFittedBottom
-using Oceananigans.Models.HydrostaticFreeSurfaceModels: FFTImplicitFreeSurfaceSolver
+using Oceananigans.Models.HydrostaticFreeSurfaceModels: FFTImplicitFreeSurfaceSolver, MGImplicitFreeSurfaceSolver
 using Printf
 
 underlying_grid = RectilinearGrid(CPU(),
@@ -28,6 +29,11 @@ free_surface = ImplicitFreeSurface(solver_method=:PreconditionedConjugateGradien
 # free_surface = ImplicitFreeSurface(solver_method=:FastFourierTransform)
 # free_surface = ImplicitFreeSurface(solver_method=:HeptadiagonalIterativeSolver)
 # free_surface = ImplicitFreeSurface(solver_method=:Multigrid)
+
+# won't work; need to add precondition!() method first
+# settings = (:abstol => 1.0e-15, :reltol => 0, :maxiter => 2097152)
+# mg_preconditioner = MGImplicitFreeSurfaceSolver(underlying_grid, settings, g_Earth)
+# free_surface = ImplicitFreeSurface(solver_method=:PreconditionedConjugateGradient, preconditioner=mg_preconditioner)
 
 # Physics
 Δx, Δz = grid.Lx / grid.Nx, grid.Lz / grid.Nz
