@@ -14,17 +14,17 @@ underlying_grid = RectilinearGrid(CPU(),
 
 const Lz = underlying_grid.Lz
 const width = 50kilometers
-bump(x, y) = - Lz * (1 - 0.05 * exp(-(x^2 + y^2) / 2width^2))
+bump(x, y) = - Lz * (1 - 0.2 * exp(-(x^2 + y^2) / 2width^2))
 grid = ImmersedBoundaryGrid(underlying_grid, GridFittedBottom(bump))
 
 # this is to fix a bug in validate_fft_implicit_solver_grid
 import Oceananigans.Models.HydrostaticFreeSurfaceModels.validate_fft_implicit_solver_grid
 validate_fft_implicit_solver_grid(ibg::ImmersedBoundaryGrid) = validate_fft_implicit_solver_grid(ibg.underlying_grid)
 
-fft_preconditioner = FFTImplicitFreeSurfaceSolver(grid)
-free_surface = ImplicitFreeSurface(solver_method=:PreconditionedConjugateGradient, preconditioner=fft_preconditioner)
+# fft_preconditioner = FFTImplicitFreeSurfaceSolver(grid)
+# free_surface = ImplicitFreeSurface(solver_method=:PreconditionedConjugateGradient, preconditioner=fft_preconditioner)
 
-# free_surface = ImplicitFreeSurface(solver_method=:PreconditionedConjugateGradient)
+free_surface = ImplicitFreeSurface(solver_method=:PreconditionedConjugateGradient)
 # free_surface = ImplicitFreeSurface(solver_method=:FastFourierTransform)
 # free_surface = ImplicitFreeSurface(solver_method=:HeptadiagonalIterativeSolver)
 # free_surface = ImplicitFreeSurface(solver_method=:Multigrid)
