@@ -67,8 +67,8 @@ for implicit_free_surface_solver in implicit_free_surface_solvers
                                         buoyancy = BuoyancyTracer(),
                                         closure = (diffusive_closure, horizontal_closure),
                                         tracers = :b,
-                                        momentum_advection = WENO5(),
-                                        tracer_advection = WENO5())
+                                        momentum_advection = WENO(),
+                                        tracer_advection = WENO())
 
     # Initial condition: a baroclinically unstable situation!
     ramp(y, δy) = min(max(0, y/δy + 1/2), 1)
